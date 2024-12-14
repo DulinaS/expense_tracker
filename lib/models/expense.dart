@@ -1,10 +1,22 @@
 //DATA STRUCTURE/Bleuprint for a expense. Just like quiz_question.dart in quiz_app
 //We will generate unique id
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart'; //to Format the date
+
+final formatter = DateFormat.yMd();
 
 const uuid = Uuid(); //Used to generate unique IDs- Utility Object
 
 enum Category { food , travel , leisure , work}
+
+//Icons for each category based on category types
+const categoryIcons = {
+  Category.food: Icons.lunch_dining,
+  Category.travel: Icons.flight_takeoff,
+  Category.leisure: Icons.movie,
+  Category.work: Icons.work,
+};
 
 class Expense {
   Expense({
@@ -23,5 +35,10 @@ class Expense {
   final double amount;
   final DateTime date; //built-in dart feature to store date
   final Category category;
+
+  //This is a getter to format the date---> For that we can import 3rd party package intl to format it
+  String getFormattedDate(){
+    return formatter.format(date);
+  }
 }
 

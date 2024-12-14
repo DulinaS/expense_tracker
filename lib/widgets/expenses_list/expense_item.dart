@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +6,7 @@ import 'package:flutter/material.dart';
 class ExpenseItem extends StatelessWidget {
   const ExpenseItem(this.expense, {super.key});
 
-  final Expense
-      expense; //This is the model for a expense. COntains title,Amount etc.
+  final Expense expense; //This is the model for a expense. COntains title,Amount etc.
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -36,9 +34,9 @@ class ExpenseItem extends StatelessWidget {
                 // So in here it takes maximum space between 'Text' & 'Row' Widget
                 Row(
                   children: [
-                    const Icon(Icons.alarm),
+                    Icon(categoryIcons[expense.category]),
                     const SizedBox(width: 8),
-                    Text(expense.date.toString()),
+                    Text(expense.getFormattedDate()),
                   ],
                 ),
               ],
