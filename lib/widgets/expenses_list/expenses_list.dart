@@ -1,4 +1,5 @@
 import 'package:expense_tracker/models/expense.dart';
+import 'package:expense_tracker/widgets/expenses_list/expense_item.dart';
 import 'package:flutter/material.dart';
 
 //We only output a expense list so, no need this to be a stateful class
@@ -18,7 +19,7 @@ class ExpensesList extends StatelessWidget {
     return ListView.builder(
       itemCount: expenses.length,
       itemBuilder: (ctx, index) { //This anonymous func will be getting called 'itemCount' number of times
-        return Text(expenses[index].title);
+        return ExpenseItem(expenses[index]);
       },
     );
   }
