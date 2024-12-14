@@ -9,11 +9,16 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpenseState extends State<NewExpense> {
-  var _enteredTitle = '';
+  //Store inputs--> TextEditingController() is a object
+  //            --> Handles USER inputs automatically by Flutter
+  final _titleController = TextEditingController();
 
-  //Store user input value
-  void _saveTitleInput(String inputValue) {
-    _enteredTitle = inputValue;
+  //You have to CLOSE the 'TextEditingController()' when the overlay is closed
+  //Otherwise 'TextEditingControlle(); will stay live.
+  @override
+  void dispose() {
+    _titleController.dispose();  //Only State classes can use dipose() method that's why this class should be a STATEFUL WIDGET
+    super.dispose();
   }
 
   @override
@@ -24,7 +29,7 @@ class _NewExpenseState extends State<NewExpense> {
       child: Column(
         children: [
           TextField(
-            onChanged: _saveTitleInput,
+            controller: _titleController,
             maxLength: 50, //Number of characters that can be inputted
             decoration: const InputDecoration(
               label: Text('Title'),
@@ -34,7 +39,7 @@ class _NewExpenseState extends State<NewExpense> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  print(_enteredTitle);
+                  print(_titleController.text);
                 },
                 child: const Text('Save Expense'),
               ),
