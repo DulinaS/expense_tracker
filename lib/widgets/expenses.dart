@@ -1,5 +1,6 @@
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
+import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
 //Widget Class
@@ -30,9 +31,34 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  void _openAddExpenseOverlay() {
+    //We can use built-in feature to open the overlay
+    //This will add a UI model overlay when executed.
+
+    //context--> contains related data to widgets
+    //builder --> *Always a function that should return a widget*
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return const NewExpense();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter ExpenseTracker'),
+
+        //actions[] ---> is List of widgets. Used to display buttons in tool bar top of screen
+        actions: [
+          IconButton(
+            onPressed: _openAddExpenseOverlay,
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           const Text('The Chart'),
