@@ -43,11 +43,18 @@ class _NewExpenseState extends State<NewExpense> {
             maxLength: 10,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
+              prefixText: '\$ ', //Dollar Sign front of amount
               label: Text('Amount'),
             ),
           ),
           Row(
             children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); //Removes overlay from screen
+                },
+                child: const Text('Cancel'),
+              ),
               ElevatedButton(
                 onPressed: () {
                   print(_titleController.text);
