@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +7,45 @@ import 'package:flutter/material.dart';
 class ExpenseItem extends StatelessWidget {
   const ExpenseItem(this.expense, {super.key});
 
-  final Expense expense; //This is the model for a expense. COntains title,Amount etc.
+  final Expense
+      expense; //This is the model for a expense. COntains title,Amount etc.
   @override
   Widget build(BuildContext context) {
-    return Card(child: Text(expense.title),);
+    return Card(
+      //Add padding- spaces between text and card borders.
+      //Wrap the text widget with padding widget because card widget don't have padding option
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+
+        //Need column to display widgets one by one down/above
+        child: Column(
+          children: [
+            Text(expense.title),
+            const SizedBox(height: 4),
+
+            //Need a row to represent widgets next to each other
+            Row(
+              children: [
+                Text(
+                    '\$${expense.amount.toStringAsFixed(2)}'), //12.3433=> 12.34
+
+                const Spacer(), //Spacer takes the maximum possible space between 2 widgets
+                // So in here it takes maximum space between 'Text' & 'Row' Widget
+                Row(
+                  children: [
+                    const Icon(Icons.alarm),
+                    const SizedBox(width: 8),
+                    Text(expense.date.toString()),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
