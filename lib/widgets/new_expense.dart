@@ -16,6 +16,18 @@ class _NewExpenseState extends State<NewExpense> {
   //You have to CLOSE the 'TextEditingController()' when the overlay is closed
   //Otherwise 'TextEditingControlle(); will stay live.
 
+  void _presentDatePicker() {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year-1, now.month, now.day); //firstDate is a one year behind today year
+
+    showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate, //Oldest date can be set because this is a expense tracker
+      lastDate: now, //Today's date --> You can;t add future expenses
+    );
+  }
+
   @override
   void dispose() {
     _titleController
@@ -38,14 +50,37 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text('Title'),
             ),
           ),
-          TextField(
-            controller: _amountController,
-            maxLength: 10,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              prefixText: '\$ ', //Dollar Sign front of amount
-              label: Text('Amount'),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  maxLength: 10,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    prefixText: '\$ ', //Dollar Sign front of amount
+                    label: Text('Amount'),
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 16),
+
+              Expanded(
+                child: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.end, //Set widget at end of screen
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, //Center content vertically
+                  children: [
+                    const Text('Selected Date'),
+                    IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: const Icon(Icons.calendar_month))
+                  ],
+                ),
+              )
+            ],
           ),
           Row(
             children: [
