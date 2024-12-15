@@ -38,6 +38,7 @@ class _ExpensesState extends State<Expenses> {
     //context--> contains related data to widgets
     //builder --> *Always a function that should return a widget*
     showModalBottomSheet(
+      isScrollControlled: true, //Model overlay will take up full screen
       context: context,
       builder: (ctx) {
         return  NewExpense(onAddExpense: _addExpense); //Passes the function addExpense to the newExpense class

@@ -77,6 +77,7 @@ class _NewExpenseState extends State<NewExpense> {
           date: _selectedDate!,
           category: _selecedCategory),
     );
+    Navigator.pop(context); //Close model overlay after details are submitted
   }
 
   @override
@@ -91,7 +92,8 @@ class _NewExpenseState extends State<NewExpense> {
   Widget build(BuildContext context) {
     //Don't want widgets to the edge of the screen
     return Padding(
-      padding: const EdgeInsets.all(16),
+      
+      padding: const EdgeInsets.fromLTRB(16,48,16,16),
       child: Column(
         children: [
           TextField(
