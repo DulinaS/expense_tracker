@@ -12,24 +12,26 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  
 
-  DateTime ? _selectedDate; //variable hasn't been initialized 
+  DateTime? _selectedDate; //variable hasn't been initialized
 
-  void _presentDatePicker () async {
+  //Initial category default value before selecting
+  Category _selecedCategory = Category.leisure;
+
+  void _presentDatePicker() async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year-1, now.month, now.day); //firstDate is a one year behind today year
+    final firstDate = DateTime(now.year - 1, now.month,
+        now.day); //firstDate is a one year behind today year
 
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
-      firstDate: firstDate, //Oldest date can be set because this is a expense tracker
+      firstDate:firstDate, //Oldest date can be set because this is a expense tracker
       lastDate: now, //Today's date --> You can;t add future expenses
     );
     setState(() {
       _selectedDate = pickedDate;
     });
-
   }
 
   @override
@@ -67,9 +69,7 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                 ),
               ),
-
               const SizedBox(width: 16),
-
               Expanded(
                 child: Row(
                   mainAxisAlignment:
@@ -77,7 +77,9 @@ class _NewExpenseState extends State<NewExpense> {
                   crossAxisAlignment:
                       CrossAxisAlignment.center, //Center content vertically
                   children: [
-                    Text(_selectedDate == null ? 'No Date Selected' : formatter.format(_selectedDate!) ),
+                    Text(_selectedDate == null
+                        ? 'No Date Selected'
+                        : formatter.format(_selectedDate!)),
                     IconButton(
                         onPressed: _presentDatePicker,
                         icon: const Icon(Icons.calendar_month))
@@ -86,8 +88,34 @@ class _NewExpenseState extends State<NewExpense> {
               )
             ],
           ),
+          const SizedBox(height: 16), //Distance between row of buttons and textFields
+          //Row for buttons
           Row(
             children: [
+              DropdownButton(
+                value:_selecedCategory, //Initial text on dropdown button shows default selected category
+                items: Category.values
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(
+                          category.name.toUpperCase(),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value == null) {
+                    return; //No category is selected
+                  }
+                  setState(() {
+                    _selecedCategory =
+                        value; //Screen gets updated with Newly selected category-->
+                    //That is why setState() is used to update UI
+                  });
+                },
+              ),
+              const Spacer(), //maxmimum distance between 2 widgets
               TextButton(
                 onPressed: () {
                   Navigator.pop(context); //Removes overlay from screen
