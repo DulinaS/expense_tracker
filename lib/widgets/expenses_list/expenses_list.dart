@@ -7,8 +7,13 @@ import 'package:flutter/material.dart';
 class ExpensesList extends StatelessWidget {
   //This class accepts the list of expenses as a parameter
   //After that it modifies the UI with list values
-  const ExpensesList({super.key, required this.expenses});
+  const ExpensesList({
+    super.key, 
+    required this.expenses, 
+    required this.onRemoveExpense,
+    });
 
+  final void Function(Expense expense) onRemoveExpense;
   final List<Expense> expenses;
 
   @override
@@ -18,9 +23,17 @@ class ExpensesList extends StatelessWidget {
     // It will create items that is only visible at the moment in the screen
     return ListView.builder(
       itemCount: expenses.length,
-      itemBuilder: (ctx, index) { //This anonymous func will be getting called 'itemCount' number of times
+      /* itemBuilder: (ctx, index) { //This anonymous func will be getting called 'itemCount' number of times
         return ExpenseItem(expenses[index]);
-      },
+      }, */
+      //key - make Widgets uniquely identifiable
+      itemBuilder: (ctx, index) => Dismissible(
+        key: ValueKey(expenses[index]),
+        onDismissed: (direction){  //Regardless the direction we swipe
+          onRemoveExpense(expenses[index]);
+        },
+        child: ExpenseItem(expenses[index]),
+      ),
     );
   }
 }

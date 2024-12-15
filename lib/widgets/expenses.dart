@@ -48,9 +48,14 @@ class _ExpensesState extends State<Expenses> {
 
   //Add new expense from model overlay to the final lsit
   void _addExpense(Expense expense){
-
     setState(() {
       _registeredExpenses.add(expense);
+    });
+  }
+  //remove expense when dissmissing
+  void _removeExpense(Expense expense){
+    setState(() {
+      _registeredExpenses.remove(expense);
     });
   }
 
@@ -71,7 +76,7 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           const Text('The Chart'),
-          Expanded(child: ExpensesList(expenses: _registeredExpenses)),
+          Expanded(child: ExpensesList(expenses: _registeredExpenses, onRemoveExpense: _removeExpense,)),
         ],
       ),
     );
