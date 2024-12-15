@@ -20,8 +20,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   void _presentDatePicker() async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year - 1, now.month,
-        now.day); //firstDate is a one year behind today year
+    final firstDate = DateTime(now.year - 1, now.month, now.day); //firstDate is a one year behind today year
 
     final pickedDate = await showDatePicker(
       context: context,
@@ -32,6 +31,37 @@ class _NewExpenseState extends State<NewExpense> {
     setState(() {
       _selectedDate = pickedDate;
     });
+  }
+
+  void _submitExpenseData() {
+    final enteredNumber = double.tryParse(_amountController.text);
+
+    final amountIsInvalid =
+        enteredNumber == null || enteredNumber <= 0 ? true : false;
+
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+          //If any erro occurs it goes through this IF statement
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text(
+              'Please make sure a valid title, amount, date and category was entered'),
+
+          //List of widgets
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: const Text('Okay'))
+          ],
+        ),
+      );
+      return;
+    }
   }
 
   @override
@@ -88,12 +118,14 @@ class _NewExpenseState extends State<NewExpense> {
               )
             ],
           ),
-          const SizedBox(height: 16), //Distance between row of buttons and textFields
+          const SizedBox(
+              height: 16), //Distance between row of buttons and textFields
           //Row for buttons
           Row(
             children: [
               DropdownButton(
-                value:_selecedCategory, //Initial text on dropdown button shows default selected category
+                value:
+                    _selecedCategory, //Initial text on dropdown button shows default selected category
                 items: Category.values
                     .map(
                       (category) => DropdownMenuItem(
@@ -123,10 +155,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                },
+                onPressed: _submitExpenseData,
                 child: const Text('Save Expense'),
               ),
             ],
