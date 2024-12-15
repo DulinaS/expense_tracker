@@ -42,3 +42,27 @@ class Expense {
   }
 }
 
+//Class to build the chart because we need sum of each category expenses
+class ExpenseBucket{
+  const ExpenseBucket({
+    required this.category,
+    required this.expenses,
+  });
+
+  final Category category;
+  final List<Expense> expenses;
+
+  //getter is same as a function but one that doesn't accept arguments
+  //Returns total sum of the expenses
+  double get  totalExpenses {
+    double sum = 0;
+
+    //Goes every elements in expenses list
+    for(final expense in expenses){
+      sum += expense.amount; //sum = sum + expense.amount
+    }
+
+    return sum;
+  }
+}
+
