@@ -1,4 +1,3 @@
-
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +5,8 @@ import 'package:flutter/material.dart';
 class ExpenseItem extends StatelessWidget {
   const ExpenseItem(this.expense, {super.key});
 
-  final Expense expense; //This is the model for a expense. COntains title,Amount etc.
+  final Expense
+      expense; //This is the model for a expense. COntains title,Amount etc.
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -20,8 +20,13 @@ class ExpenseItem extends StatelessWidget {
 
         //Need column to display widgets one by one down/above
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(expense.title),
+            Text(
+              expense.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+
             const SizedBox(height: 4),
 
             //Need a row to represent widgets next to each other
