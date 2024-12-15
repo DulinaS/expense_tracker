@@ -1,3 +1,4 @@
+import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
@@ -9,23 +10,26 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpenseState extends State<NewExpense> {
-  //Store inputs--> TextEditingController() is a object
-  //            --> Handles USER inputs automatically by Flutter
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  //You have to CLOSE the 'TextEditingController()' when the overlay is closed
-  //Otherwise 'TextEditingControlle(); will stay live.
+  
 
-  void _presentDatePicker() {
+  DateTime ? _selectedDate; //variable hasn't been initialized 
+
+  void _presentDatePicker () async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year-1, now.month, now.day); //firstDate is a one year behind today year
 
-    showDatePicker(
+    final pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
       firstDate: firstDate, //Oldest date can be set because this is a expense tracker
       lastDate: now, //Today's date --> You can;t add future expenses
     );
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+
   }
 
   @override
@@ -73,7 +77,7 @@ class _NewExpenseState extends State<NewExpense> {
                   crossAxisAlignment:
                       CrossAxisAlignment.center, //Center content vertically
                   children: [
-                    const Text('Selected Date'),
+                    Text(_selectedDate == null ? 'No Date Selected' : formatter.format(_selectedDate!) ),
                     IconButton(
                         onPressed: _presentDatePicker,
                         icon: const Icon(Icons.calendar_month))
