@@ -2,7 +2,11 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  //Points to the function in expenses.dart to add new expense to the list
+  final void Function(Expense expense) onAddExpense;
+
   @override
   State<StatefulWidget> createState() {
     return _NewExpenseState();
@@ -20,7 +24,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   void _presentDatePicker() async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year - 1, now.month, now.day); //firstDate is a one year behind today year
+    final firstDate = DateTime(now.year - 1, now.month,now.day); //firstDate is a one year behind today year
 
     final pickedDate = await showDatePicker(
       context: context,
@@ -33,16 +37,17 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
+  //Execeutes this method when Submit button clicked
   void _submitExpenseData() {
-    final enteredNumber = double.tryParse(_amountController.text);
+    final enteredAmount = double.tryParse(_amountController.text);
 
     final amountIsInvalid =
-        enteredNumber == null || enteredNumber <= 0 ? true : false;
+        enteredAmount == null || enteredAmount <= 0 ? true : false;
 
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
         _selectedDate == null) {
-          //If any erro occurs it goes through this IF statement
+      //If any erro occurs it goes through this IF statement
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -62,6 +67,16 @@ class _NewExpenseState extends State<NewExpense> {
       );
       return;
     }
+
+    //Gets widget class's attributes in it's state class
+    //Now this will trigger the function in expenses.dart. A new expense object will be added to the list
+    widget.onAddExpense(
+      Expense(
+          title: _titleController.text,
+          amount: enteredAmount,
+          date: _selectedDate!,
+          category: _selecedCategory),
+    );
   }
 
   @override
